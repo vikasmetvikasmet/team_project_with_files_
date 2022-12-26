@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+double countTheNumberOfLiters(double landArea){
+    const double litersPerMeter = 0.5;
+
+    double howManyLitersOfPaint = landArea * litersPerMeter;
+
+    return howManyLitersOfPaint;
+}
+double areaOftheRoomPainting(double roomLength, double roomWidth, double roomHeight, double openingArea){
+
+    double landArea = (roomLength * roomWidth) +
+                      (2 * (roomLength * roomHeight)) + (2 * (roomWidth * roomHeight)) - openingArea;
+
+    return landArea;
+}
+int howManyCans(double howManyLitersOfPaint){
+    const double litersOfPaintInOneCan = 6.0;
+    int wholePart = howManyLitersOfPaint;
+
+    double fractionalPart = howManyLitersOfPaint - wholePart;
+
+    double howManyCansOfPaint = (wholePart / 6);
+
+    if (fractionalPart != 0){
+        howManyCansOfPaint++;
+    }
+    return howManyCansOfPaint;
+
+}
+double howMuchMoneyToSpend(double numberOfCans){
+    int choice;
+    double costOfAllCans = 0;
+    const int firstPaint = 700;
+    const int secondPaint = 900;
+    const int thirdPaint = 1000;
+
+    cout << "Пожалуйста, выберите краску по ценовой категории: 700р/900р/1000р за 6-ти литровую банку... "
+            "Напишите 1/2/3 соответственно."<< endl;
+    cin >> choice;
+
+    if (choice == 1){
+        costOfAllCans = numberOfCans * firstPaint;
+    } else if (choice == 2){
+        costOfAllCans = numberOfCans * secondPaint;
+    } else if (choice == 3){
+        costOfAllCans = numberOfCans * thirdPaint;
+    }
+    return costOfAllCans;
+}
+
+void output_func(double roomLength, double roomWidth, double roomHeight, double budget, double openingArea){
+    double landArea = areaOftheRoomPainting(roomLength, roomWidth, roomHeight, openingArea);
+    double numberOfLiters = countTheNumberOfLiters(landArea);
+    int numberOfCans = howManyCans(numberOfLiters);
+    double costOfAllCans = howMuchMoneyToSpend(numberOfCans);
+
+    ofstream cout;
+    cout.open("/Users/ila/Documents/two.txt");
+    ifstream cin;
+    cin.open("/Users/ila/Documents/one.txt");
+    double roomLength, roomWidth, roomHeight, budget, openingArea;
+    cout<<"Калькулятор для расчета соймости покраски."<< endl << endl;
+    cin>> roomLength >> roomWidth >>roomHeight >> budget>> openingArea;
+    cout << "------------------------------" << endl << endl;
+
+    cout<< "Площадь покраски с учетом дверных и окононных проемов составит = " << landArea << " квадратных метров."<< endl << endl;
+    cout<< "Для покраски данной площади вам потребуется " << numberOfLiters << " литра(ов) краски." << endl << endl;
+    cout << numberOfCans << " шестилитровых банок(ки) краски необходимо купить." << endl << endl;
+    if (costOfAllCans > budget){
+        cout << "На краску вам придется потратить " << costOfAllCans << " руб, что не соответствует вашему бюджету в "
+             << budget << " руб... Вы можете выбрать более бюджетную краску."<< endl;
+    } else {
+        cout << "На краску вам придется потратить "
+             << costOfAllCans << " руб, что соответствует вашему бюджету. Вы сможете покрасить ваше помещение." << endl;
+    }
+    cout.close();
+    cin.close();
+}
+
+int main()
+{
+    output_func();
+}
+
+
+
